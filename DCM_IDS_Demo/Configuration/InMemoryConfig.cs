@@ -77,7 +77,20 @@ public class InMemoryConfig
                 ClientId = "dcm-example",
                 ClientSecrets = new [] { new Secret("dcmsecret".Sha512()) },
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, "full_name", "state", "position" }
+                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,  "dcmapi" , "full_name", "state", "position" }
             }
+        };
+    
+    
+    public static IEnumerable<ApiScope> GetApiScopes() =>
+        new List<ApiScope> { new ApiScope("dcmapi", "DCM API") };
+    
+    public static IEnumerable<ApiResource> GetApiResources() =>
+        new List<ApiResource> 
+        { 
+            new ApiResource("dcmapi", "DCM API") 
+            { 
+                Scopes = { "dcmapi" } 
+            } 
         };
 }
