@@ -12,7 +12,10 @@ public class InMemoryConfig
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResource("state","DCM User State",new List<string>(){"state"})
+            new IdentityResource("state","DCM User State",new List<string>(){"state"}),
+            new IdentityResource("role","DCM User Role",new List<string>(){"role"}),
+            new IdentityResource("position","DCM User Position",new List<string>(){"position"}),
+            new IdentityResource("full_name","DCM User Name",new List<string>(){"full_name"}),
         };
     
     public static List<TestUser> GetUsers() =>
@@ -27,7 +30,8 @@ public class InMemoryConfig
                 {
                     new Claim("full_name", "Priyal Aruna"),
                     new Claim("state", "nsw"),
-                    new Claim("position", "doctor")
+                    new Claim("position", "doctor"),
+                    new Claim("role", "Admin")
                 }
             },
             new TestUser
@@ -39,7 +43,8 @@ public class InMemoryConfig
                 {
                     new Claim("full_name", "Gayan Gayan"),
                     new Claim("state", "vic"),
-                    new Claim("position", "doctor")
+                    new Claim("position", "doctor"),
+                    new Claim("role", "SiteAdmin")
                 }
             },
             new TestUser
@@ -51,7 +56,8 @@ public class InMemoryConfig
                 {
                     new Claim("full_name", "Oshadha Oshadha"),
                     new Claim("state", "vic"),
-                    new Claim("position", "manager")
+                    new Claim("position", "manager"),
+                    new Claim("role", "User")
                 }
             },
             new TestUser
@@ -63,7 +69,8 @@ public class InMemoryConfig
                 {
                     new Claim("full_name", "Piyumi Piyumi"),
                     new Claim("state", "nsw"),
-                    new Claim("position", "nurse")
+                    new Claim("position", "nurse"),
+                    new Claim("role", "User")
                 }
             }
         };
@@ -77,20 +84,33 @@ public class InMemoryConfig
                 ClientId = "dcm-example",
                 ClientSecrets = new [] { new Secret("dcmsecret".Sha512()) },
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,  "dcmapi" , "full_name", "state", "position" }
+                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,  "dcmapi" , "full_name", "state", "position", "role" }
+            },
+            new Client
+            {
+                ClientName = "DCM MVC Client",
+                ClientId = "dcm-mvc-client",
+                AllowedGrantTypes = GrantTypes.Hybrid,
+                RedirectUris = new List<string>{ "http://localhost:5213/signin-oidc" },
+                RequirePkce = false,            
+                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,"full_name", "state", "position" , "role" , "dcmapi"},
+                ClientSecrets = { new Secret("MVCSecret".Sha512()) },
+                PostLogoutRedirectUris = new List<string> { "http://localhost:5213/signout-callback-oidc" },
+                RequireConsent = true
             }
         };
-    
+
+     
     
     public static IEnumerable<ApiScope> GetApiScopes() =>
-        new List<ApiScope> { new ApiScope("dcmapi", "DCM API") };
+        new List<ApiScope> { new ApiScope("dcmapi", "DCM API" , new List<string>{"full_name", "state", "position", "role"})  };
     
     public static IEnumerable<ApiResource> GetApiResources() =>
         new List<ApiResource> 
         { 
             new ApiResource("dcmapi", "DCM API") 
             { 
-                Scopes = { "dcmapi" } 
+                Scopes = { "dcmapi" , "full_name", "state", "position", "role"} 
             } 
         };
 }

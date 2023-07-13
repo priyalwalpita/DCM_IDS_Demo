@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -132,6 +133,10 @@ namespace IdentityServerHost.Quickstart.UI
                     {
                         DisplayName = user.Username
                     };
+                    
+                    // Add custom claims 
+                    // var userClaimslist = new List<Claim>();
+                    // userClaimslist.Add(new Claim("role", "Admin"));
 
                     await HttpContext.SignInAsync(isuser, props);
 
