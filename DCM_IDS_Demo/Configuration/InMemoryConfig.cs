@@ -84,6 +84,7 @@ public class InMemoryConfig
                 ClientId = "dcm-example",
                 ClientSecrets = new [] { new Secret("dcmsecret".Sha512()) },
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                AllowOfflineAccess = true,
                 AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,  "dcmapi" , "full_name", "state", "position", "role" }
             },
             new Client
@@ -92,8 +93,9 @@ public class InMemoryConfig
                 ClientId = "dcm-mvc-client",
                 AllowedGrantTypes = GrantTypes.Hybrid,
                 RedirectUris = new List<string>{ "http://localhost:5213/signin-oidc" },
-                RequirePkce = false,            
-                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,"full_name", "state", "position" , "role" , "dcmapi"},
+                RequirePkce = false,         
+                AllowOfflineAccess = true,
+                AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,"full_name", "state", "position" , "role" , "dcmapi", "offline_access"},
                 ClientSecrets = { new Secret("MVCSecret".Sha512()) },
                 PostLogoutRedirectUris = new List<string> { "http://localhost:5213/signout-callback-oidc" },
                 RequireConsent = true
