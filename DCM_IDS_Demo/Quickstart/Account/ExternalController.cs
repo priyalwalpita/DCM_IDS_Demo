@@ -108,6 +108,8 @@ namespace IdentityServerHost.Quickstart.UI
             // this is typically used to store data needed for signout from those protocols.
             var additionalLocalClaims = new List<Claim>();
             var localSignInProps = new AuthenticationProperties();
+            //Query the local db and get claims
+            additionalLocalClaims.Add(new Claim("role","Admin"));
             ProcessLoginCallback(result, additionalLocalClaims, localSignInProps);
             
             // issue authentication cookie for user

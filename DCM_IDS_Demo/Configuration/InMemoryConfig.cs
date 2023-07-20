@@ -23,7 +23,7 @@ public class InMemoryConfig
         {
             new TestUser
             {
-                SubjectId = "a83717d3-1800-d3a2-0a95-a8e69fab46f7",
+                SubjectId = "7C8D66E5D602DC8EDDCF88DF2133A8838EC20322001342B03CEBBDB9DCB7E4DD",
                 Username = "priyal",
                 Password = "P@@$$W0rd",
                 Claims = new List<Claim>
